@@ -1,0 +1,1511 @@
+<html><head><base href="." /><meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>GrandpaBook - For the grandpa in you</title>
+<style>
+  @font-face {
+    font-family: 'Roboto';
+    src: url('Roboto-MediumItalic.ttf') format('truetype');
+    font-style: italic;
+    font-weight: 500;
+  }
+
+  :root {
+    --bg-color: #f0f2f5;
+    --text-color: #000;
+    --post-bg: #fff;
+    --navbar-color: #1877f2;
+    --border-color: #ddd;
+    --action-hover: #f0f2f5;
+    --secondary-text: #65676b;
+  }
+
+  [data-theme="dark"] {
+    --bg-color: #18191a;
+    --text-color: #fff;
+    --post-bg: #242526;
+    --navbar-color: #242526;
+    --border-color: #3e4042;
+    --action-hover: #3a3b3c;
+    --secondary-text: #b0b3b8;
+  }
+
+  body {
+    font-family: 'Roboto', Arial, sans-serif;
+    background-color: var(--bg-color);
+    margin: 0;
+    padding: 0;
+    font-size: 18px;
+    color: var(--text-color);
+  }
+  
+  .navbar {
+    background: var(--navbar-color);
+    padding: 10px 20px;
+    display: flex;
+    align-items: center;
+    color: white;
+    font-size: 20px;
+    justify-content: space-between;
+  }
+
+  .theme-toggle {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    background: none;
+    border: 2px solid white;
+    color: white;
+    padding: 8px 16px;
+    border-radius: 20px;
+    cursor: pointer;
+    font-size: 16px;
+  }
+
+  #music-icon {
+    font-size: 20px;
+  }
+
+  .logo {
+    font-size: 2.2em;
+    font-weight: bold;
+    color: white;
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+  }
+
+  .content {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 20px;
+  }
+
+  .post {
+    background: var(--post-bg);
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+    font-size: 20px;
+  }
+
+  .post-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 15px;
+  }
+
+  .profile-pic {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    margin-right: 15px;
+    object-fit: cover;
+    border: 3px solid #1877f2; /* Add blue border to profile pictures */
+  }
+
+  .post-actions {
+    border-top: 1px solid var(--border-color);
+    margin-top: 15px;
+    padding-top: 15px;
+    display: flex;
+    gap: 15px;
+  }
+
+  .action-button {
+    background: none;
+    border: none;
+    color: var(--secondary-text);
+    cursor: pointer;
+    padding: 8px 15px;
+    font-size: 18px;
+  }
+
+  .action-button:hover {
+    background: var(--action-hover);
+    border-radius: 4px;
+  }
+
+  .create-post {
+    background: var(--post-bg);
+    border-radius: 8px;
+    padding: 20px;
+    margin-bottom: 20px;
+    box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+  }
+
+  .post-input {
+    width: 100%;
+    padding: 15px;
+    border: 1px solid var(--border-color);
+    border-radius: 4px;
+    margin-bottom: 15px;
+    font-size: 18px;
+    background: var(--post-bg);
+    color: var(--text-color);
+  }
+
+  .time {
+    color: var(--secondary-text);
+    font-size: 1em;
+  }
+
+  .share-menu {
+    position: absolute;
+    background: var(--post-bg);
+    border-radius: 8px;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    padding: 15px;
+    display: none;
+    font-size: 18px;
+    z-index: 1000;
+    color: var(--text-color);
+  }
+
+  .share-option {
+    padding: 8px 15px;
+    cursor: pointer;
+  }
+
+  .share-option:hover {
+    background: var(--action-hover);
+    border-radius: 4px;
+  }
+
+  .post-content {
+    font-size: 22px;
+    line-height: 1.4;
+    margin-bottom: 15px;
+  }
+
+  .boss-battle {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.95);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    z-index: 9999;
+    color: white;
+  }
+
+  .boss-health {
+    width: 80%;
+    height: 30px;
+    background: #333;
+    border: 2px solid #fff;
+    margin: 10px;
+    position: relative;
+  }
+
+  .health-bar {
+    height: 100%;
+    background: #ff0000;
+    transition: width 0.3s;
+    width: 100%;
+  }
+
+  .boss-sprite {
+    width: 200px;
+    height: 200px;
+    margin: 20px;
+    animation: float 2s infinite ease-in-out;
+  }
+
+  .player-health {
+    width: 60%;
+    height: 20px;
+    background: #333;
+    border: 2px solid #fff;
+    margin: 10px;
+    position: relative;
+  }
+
+  .attack-button {
+    background: #ff0000;
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    font-size: 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 10px;
+  }
+
+  .heal-button {
+    background: #28a745;
+    color: white;
+    border: none;
+    padding: 15px 30px;
+    font-size: 20px;
+    border-radius: 5px;
+    cursor: pointer;
+    margin: 10px;
+  }
+
+  .battle-text {
+    font-size: 24px;
+    margin: 10px;
+    min-height: 30px;
+  }
+
+  @keyframes float {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-20px); }
+  }
+
+  @keyframes damage {
+    0% { transform: translateX(0); }
+    25% { transform: translateX(-10px); }
+    75% { transform: translateX(10px); }
+    100% { transform: translateX(0); }
+  }
+
+  @keyframes flash {
+    0% { opacity: 1; }
+    100% { opacity: 0; }
+  }
+
+  #boss-name {
+    font-size: 2.5em;
+    margin-bottom: 20px;
+    text-align: center;
+    transition: color 0.3s;
+  }
+
+  .boss-battle.phase2 #boss-name {
+    color: #ff4400;
+    text-shadow: 0 0 10px #ff0000;
+  }
+
+  .game-over {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: black;
+    color: red;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    font-size: 48px;
+    z-index: 10000;
+  }
+
+  .reminder-timer {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    background: var(--post-bg);
+    padding: 10px 15px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+    z-index: 999;
+    font-size: 16px;
+    color: var(--text-color);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+</style>
+<audio id="background-music" loop preload="auto">
+  <source src="Mii Editor - Mii Maker (Wii U) Music [ ezmp3.cc ].mp3" type="audio/mp3">
+</audio>
+<audio id="sad-trombone" preload="auto">
+  <source src="Sad Trombone - Sound Effect (HD).mp3" type="audio/mp3">
+</audio>
+</head>
+<body>
+  <div class="navbar">
+    <div style="display: flex; align-items: center;">
+      <a href="https://grandpabook.example.com" class="logo">
+        <svg width="40" height="40" viewBox="0 0 100 100">
+          <circle cx="50" cy="50" r="45" fill="#fff"/>
+          <text x="50" y="70" text-anchor="middle" font-size="60" fill="#1877f2">G</text>
+        </svg>
+        GrandpaBook
+      </a>
+      <span style="margin-left: 20px; font-style: italic;">For the grandpa in you</span>
+    </div>
+    <div style="display: flex; gap: 10px;">
+      <button class="theme-toggle" onclick="toggleMusic()">
+        <span id="music-icon">🔈</span> Music
+      </button>
+      <button class="theme-toggle" onclick="toggleTheme()">Toggle Dark Mode</button>
+    </div>
+  </div>
+
+  <div class="content">
+    <div class="create-post">
+      <textarea class="post-input" placeholder="What's on your mind, Grandpa?"></textarea>
+      <button class="action-button" onclick="createPost()">Post</button>
+    </div>
+
+    <div id="posts-container">
+      <!-- Posts will be dynamically added here -->
+    </div>
+  </div>
+
+<script>
+let bossMusic = null;
+let bannedGrandpas = 0; // Also adding this since it's used but not declared
+let isMusicEnabled = false; // Changed from true to false
+let clickSound = new Audio('Click.mp3');
+let slashSound = new Audio('Slash.wav');
+let healSound = new Audio('heal.wav');
+
+const oldTimeyNames = [
+  "Archibald",
+  "Clarence", 
+  "Wilford",
+  "Herbert",
+  "Winston",
+  "Eugene",
+  "Chester",
+  "Mortimer",
+  "Orville",
+  "Theodore",
+  "Cornelius",
+  "Augustus",
+  "Thaddeus",
+  "Reginald",
+  "Leopold",
+  "Edmund",
+  "Jasper",
+  "Horace",
+  "Milton",
+  "Ernest"
+];
+
+const profilePics = [
+  "images (1).jpg",  // Morgan Freeman
+  "images (2).jpg",  // Man with glasses
+  "images (3).jpg",  // Spectral elderly man
+  "images-1.jpg",    // Senior with thumbs up
+  "].jpg",           // Angry old man
+  "images.jpg"      // Grotesque old man
+];
+
+let backgroundMusic;
+let sadTrombone;
+
+// Initialize audio elements after user interaction
+function initializeAudio() {
+  // Only initialize if not already done
+  if (!backgroundMusic) {
+    backgroundMusic = document.getElementById('background-music');
+    sadTrombone = document.getElementById('sad-trombone');
+    
+    // Start background music only if enabled
+    if (isMusicEnabled) {
+      backgroundMusic.play().catch(error => {
+        console.log("Audio playback failed:", error);
+      });
+    }
+  }
+}
+
+// Add click sound to the whole document
+document.addEventListener('click', function() {
+  clickSound.play().catch(error => {
+    console.log("Click sound failed:", error);
+  });
+});
+
+// Add event listeners for user interaction
+document.addEventListener('click', initializeAudio, { once: true });
+document.addEventListener('keydown', initializeAudio, { once: true });
+
+function toggleMusic() {
+  if (!backgroundMusic) {
+    initializeAudio();
+  }
+  
+  isMusicEnabled = !isMusicEnabled;
+  const musicIcon = document.getElementById('music-icon');
+  
+  if (isMusicEnabled) {
+    backgroundMusic.play().catch(error => {
+      console.log("Audio playback failed:", error);
+    });
+    musicIcon.textContent = '🔊';
+  } else {
+    backgroundMusic.pause();
+    musicIcon.textContent = '🔈';
+  }
+}
+
+const posts = [
+  {
+    name: "Morgan Freeman",
+    time: "30 minutes ago",
+    content: "Just spent 4 hours explaining to my grandson how we used to have to record TV shows on VHS tapes. He asked if that was before electricity was invented. 🤦‍♂️",
+    likes: 89,
+    yeahs: 45,
+    dislikes: 0,
+    image: "https://c4wmmzoxmiiquu_ot8s5.c.websim.ai/images%20(1).jpg"
+  },
+  {
+    name: "The Developer (Grandpa Edition)",
+    time: "Just now",
+    content: "I SWEAR IF I SEE ONE MORE REMIX THAT JUST MAKES THE GRANDPAS EVIL, BACK IN MY DAY, WE KNEW HOW TO MAKE ORIGINAL REMIXES",
+    likes: 0,
+    yeahs: 0,
+    dislikes: 0,
+    image: "https://c4wmmzoxmiiquu_ot8s5.c.websim.ai/images-1.jpg" // Using thumbs up grandpa image
+  },
+  {
+    name: "Albert Worthington",
+    time: "45 minutes ago",
+    content: "These kids with their selfies... back in my day, we had to wait a week to get our photos developed, and we LIKED it that way! Now get off my digital lawn! 📸",
+    likes: 67,
+    yeahs: 33,
+    dislikes: 0,
+    image: "https://c4wmmzoxmiiquu_ot8s5.c.websim.ai/images%20(2).jpg"
+  },
+  {
+    name: "Ezekiel Johnson",
+    time: "2 hours ago",
+    content: "Just had my afternoon nap interrupted by those dang kids playing their loud music next door. In my day, we respected our elders' nap time! Now where's my prune juice... 😤",
+    likes: 112,
+    yeahs: 56,
+    dislikes: 0,
+    image: "images (3).jpg"
+  },
+  {
+    name: "Marvin Hawthorne",
+    time: "1 hour ago", 
+    content: "Back in my day, we didn't need these newfangled social media websites! We'd just yell across the fence to our neighbors! Much more personal if you ask me!",
+    likes: 12,
+    yeahs: 8,
+    dislikes: 0,
+    image: "images-1.jpg"
+  },
+  {
+    name: "Herbert Spencer",
+    time: "3 hours ago",
+    content: "Just spent 3 hours telling the cashier about my war stories. These young people need to learn their history!",
+    likes: 34,
+    yeahs: 15,
+    dislikes: 0,
+    image: "images (2).jpg"
+  },
+  {
+    name: "Wilford Brimley",
+    time: "5 hours ago",
+    content: "Diabeetus. That's all I have to say about that. Also, get off my lawn!",
+    likes: 56,
+    yeahs: 28,
+    dislikes: 0,
+    image: "].jpg"
+  },
+  {
+    name: "Harold Thompson",
+    time: "2 hours ago",
+    content: "Back in my day, kids would go fishing instead of staring at those dang phones all day! Just got back from the lake - caught a 5-pounder bass. That's REAL entertainment! 🎣",
+    likes: 24,
+    yeahs: 12,
+    dislikes: 3,
+    image: "images-1.jpg"
+  },
+  {
+    name: "George Wilson",
+    time: "4 hours ago",
+    content: "My Margaret made her famous apple pie today. These youngsters nowadays don't know what real home cooking is - they're too busy with their 'delivery apps' and 'instant meals'. Been married 53 years and every pie gets better! ❤️",
+    likes: 45,
+    yeahs: 23,
+    dislikes: 0,
+    image: "images.jpg"
+  },
+  {
+    name: "Frank Miller",
+    time: "6 hours ago",
+    content: "Just saw my grandson's pants. They have HOLES in them... and he PAID for them that way! What's this world coming to? In my time, we patched our holes!",
+    likes: 67,
+    yeahs: 34,
+    dislikes: 0,
+    image: "].jpg"
+  },
+  {
+    name: "Walter Jenkins",
+    time: "8 hours ago",
+    content: "Finally figured out how to program my VCR! Take that, technology! Now, can someone tell me what a 'streaming service' is? 📺",
+    likes: 89,
+    yeahs: 45,
+    dislikes: 0,
+    image: "images-1.jpg"
+  },
+  {
+    name: "Earl Davidson",
+    time: "10 hours ago",
+    content: "My sweet Barbara just knitted me another sweater. That's number 342 in my collection! Keeping warm the old-fashioned way! 🧶",
+    likes: 156,
+    yeahs: 78,
+    dislikes: 0,
+    image: "images (1).jpg"
+  },
+  {
+    name: "Chester Brooks",
+    time: "12 hours ago",
+    content: "These kids with their fancy coffee drinks... $7 for coffee?! In my day, we drank it black and we LIKED it that way! ☕",
+    likes: 234,
+    yeahs: 117,
+    dislikes: 0,
+    image: "images (2).jpg"
+  },
+  {
+    name: "Stanley Peterson",
+    time: "1 day ago",
+    content: "Just finished organizing my stamp collection. Now THAT'S how you spend a Sunday afternoon! Take notes, youngsters! 📫",
+    likes: 178,
+    yeahs: 89,
+    dislikes: 0,
+    image: "images (2).jpg"
+  },
+  {
+    name: "Cornelius Watts",
+    time: "1 day ago",
+    content: "Just taught my great-grandson how to whittle a stick. He called it 'analog Minecraft'. These young'uns and their video games! 🪚",
+    likes: 145,
+    yeahs: 72,
+    dislikes: 0,
+    image: "images.jpg"
+  },
+  {
+    name: "Clarence Murphy",
+    time: "2 days ago",
+    content: "Remember when we had to walk 15 miles uphill both ways to school? Kids today complain about walking to the bus stop! 🚶‍♂️",
+    likes: 267,
+    yeahs: 133,
+    dislikes: 0,
+    image: "images-1.jpg"
+  },
+  {
+    name: "Eugene Barnes",
+    time: "2 days ago",
+    content: "Found my old vinyl records in the attic. Now THAT'S real music! None of this hippity-hop nonsense! 🎵",
+    likes: 189,
+    yeahs: 94,
+    dislikes: 0,
+    image: "].jpg"
+  },
+  {
+    name: "Harold McPherson",
+    time: "3 days ago",
+    content: "My grandson tried to explain what a 'meme' is. Back in my day, we just called them funny pictures! And they were in the newspaper, where they belong! 📰",
+    likes: 145,
+    yeahs: 72,
+    dislikes: 0,
+    image: "images (2).jpg"
+  },
+  {
+    name: "Theodore Worthington III",
+    time: "3 days ago", 
+    content: "Just taught my great-granddaughter how to play checkers. She asked if it was 'retro Minecraft'. These kids and their newfangled games... In my day, we moved REAL pieces! ♟️",
+    likes: 167,
+    yeahs: 83,
+    dislikes: 0,
+    image: "images (1).jpg"
+  },
+  {
+    name: "Reginald Butterworth",
+    time: "4 days ago",
+    content: "Went to the doctor today. He said I need to stop eating so much pie. I told him 'sonny, I've been eating pie longer than you've been alive!' That showed him! 🥧",
+    likes: 223,
+    yeahs: 111,
+    dislikes: 0,
+    image: "images (3).jpg"
+  },
+  {
+    name: "Mortimer Fitzgerald",
+    time: "4 days ago",
+    content: "These youngsters with their 'smart' homes. In my day, WE were the smart ones - we knew how to operate a thermostat without asking a robot! Now where did I put my reading glasses... 👓",
+    likes: 198,
+    yeahs: 99,
+    dislikes: 0,
+    image: "images-1.jpg"
+  },
+  {
+    name: "Winston Churchill Jr.",
+    time: "5 days ago",
+    content: "Just finished my daily crossword puzzle in PENCIL. That's right, no fancy 'autocorrect' here! Still sharp as a tack at 85! 📝",
+    likes: 256,
+    yeahs: 128,
+    dislikes: 0,
+    image: "].jpg"
+  },
+  {
+    name: "Arthur Wellington",
+    time: "15 minutes ago",
+    content: "Just got one of them new-fangled smartphones. Why do they call it 'smart' when I can't even figure out how to make a phone call? 🤔 Back in my day, phones had cords and we liked it!",
+    likes: 45,
+    yeahs: 23,
+    dislikes: 0,
+    image: "images (2).jpg"
+  },
+  {
+    name: "Bartholomew Higgins",
+    time: "25 minutes ago",
+    content: "My grandson tried to explain what a 'TikTok' is. I told him I prefer the sound of my old grandfather clock! Now that's real TikTok! 🕰️",
+    likes: 78,
+    yeahs: 39,
+    dislikes: 0,
+    image: "images-1.jpg"
+  },
+  {
+    name: "Thaddeus Montgomery",
+    time: "1 hour ago",
+    content: "These youngsters with their fancy coffee... $7 for a cup of bean water with weird Italian names? In my day, coffee was 25 cents and it came in ONE flavor: COFFEE! ☕",
+    likes: 156,
+    yeahs: 78,
+    dislikes: 0,
+    image: "images (1).jpg"
+  },
+  {
+    name: "Ebenezer Worthington",
+    time: "2 hours ago",
+    content: "Just finished organizing my collection of VHS tapes. Found my favorite episode of Matlock! Now that's quality entertainment! 📼",
+    likes: 92,
+    yeahs: 46,
+    dislikes: 0,
+    image: "].jpg"
+  },
+  {
+    name: "Reginald Blackwood III",
+    time: "3 hours ago",
+    content: "Anyone else remember when we had to get up to change the TV channel? Kids these days don't know the meaning of exercise! 📺",
+    likes: 234,
+    yeahs: 117,
+    dislikes: 0,
+    image: "images (3).jpg"
+  }
+];
+
+// Initialize posts
+window.onload = function() {
+  const container = document.getElementById('posts-container');
+  posts.forEach(post => {
+    container.appendChild(createPostElement(post));
+  });
+};
+
+// Modify the dislike function's audio handling
+function dislike(button) {
+  const dislikesText = button.textContent;
+  const dislikes = parseInt(dislikesText.match(/\d+/) ? dislikesText.match(/\d+/)[0] : 0) + 1;
+  button.textContent = `👎 Not Cool Grandpa! (${dislikes})`;
+  
+  if (dislikes >= 30) {
+    const post = button.closest('.post');
+    const name = post.querySelector('strong').textContent;
+    
+    // Add banned overlay and disable buttons
+    post.style.opacity = '0.5';
+    post.style.position = 'relative';
+    
+    const bannedOverlay = document.createElement('div');
+    bannedOverlay.style.cssText = `
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0,0,0,0.7);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: white;
+      font-size: 24px;
+      text-align: center;
+      padding: 20px;
+      border-radius: 8px;
+    `;
+    bannedOverlay.innerHTML = `
+      <div>
+        <h2>⛔ GRANDPA BANNED ⛔</h2>
+        <p>${name} has been banned from GrandpaBook for being too unpopular with the other grandpas!</p>
+        <p>Maybe it's time to go back to watching TV instead...</p>
+      </div>
+    `;
+    
+    post.appendChild(bannedOverlay);
+    
+    // Disable all buttons on the banned post
+    post.querySelectorAll('.action-button').forEach(btn => {
+      btn.disabled = true;
+      btn.style.opacity = '0.5';
+      btn.style.cursor = 'not-allowed';
+    });
+
+    bannedGrandpas++;
+    
+    // Check if all grandpas are banned
+    if (bannedGrandpas >= posts.length) {
+      // Stop background music with error handling
+      if (backgroundMusic) {
+        backgroundMusic.pause();
+      }
+      
+      // Play sad trombone with error handling
+      if (sadTrombone) {
+        sadTrombone.play().catch(error => {
+          console.log("Sad trombone playback failed:", error);
+        });
+      }
+      
+      // Show game over message
+      setTimeout(() => {
+        const gameOverOverlay = document.createElement('div');
+        gameOverOverlay.style.cssText = `
+          position: fixed;
+          top: 0;
+          left: 0;
+          right: 0;
+          bottom: 0;
+          background: rgba(0,0,0,0.9);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          color: white;
+          font-size: 32px;
+          text-align: center;
+          padding: 20px;
+          z-index: 9999;
+        `;
+        gameOverOverlay.innerHTML = `
+          <div>
+            <h1>🚫 CONGRATULATIONS? 🚫</h1>
+            <p>Now good ol' gramps doesn't have a platform to speak...</p>
+            <p>Are you proud of yourself?</p>
+            <p style="font-size: 24px; margin-top: 40px; color: #888;">
+              Maybe it's time to reflect on what you've done...
+            </p>
+          </div>
+        `;
+        document.body.appendChild(gameOverOverlay);
+      }, 1000); // Show message after trombone sound
+    }
+  }
+}
+
+function getRandomItem(array) {
+  return array[Math.floor(Math.random() * array.length)];
+}
+
+function createPostElement(post) {
+  const postDiv = document.createElement('div');
+  postDiv.className = 'post';
+  const shareMenuHTML = `
+    <div class="share-menu">
+      <div class="share-option" onclick="shareWith('Grandpa', 'he')">Share with Grandpa 👴</div>
+      <div class="share-option" onclick="shareWith('Grandma', 'she')">Share with Grandma 👵</div>
+      <div class="share-option" onclick="shareWith('Sweet Little Grandkids', '')">Share with Sweet Little Grandkids 👶</div>
+      <div class="share-option" onclick="shareWith('Bingo Buddies', 'they')">Share with Bingo Buddies 🎱</div>
+      <div class="share-option" onclick="shareWith('Friends at the Senior Center', 'they')">Share with Friends at the Senior Center 👥</div>
+      <div class="share-option" onclick="shareWith('Great Grandpa', '')">Share with Great Grandpa 👻</div>
+    </div>
+  `;
+  postDiv.innerHTML = `
+    <div class="post-header">
+      <img src="${post.image}" class="profile-pic" alt="${post.name}'s profile picture">
+      <div>
+        <strong>${post.name}</strong>
+        <div class="time">${post.time}</div>
+      </div>
+    </div>
+    <div class="post-content">
+      ${post.content}
+    </div>
+    <div class="post-actions">
+      <button class="action-button" onclick="like(this)">
+        👍 Rock On Gramps! (${post.likes})
+      </button>
+      <button class="action-button" onclick="yeah(this)">
+        🌟 YEAH!!! (${post.yeahs})
+      </button>
+      <button class="action-button" onclick="dislike(this)">
+        👎 Not Cool Grandpa! (${post.dislikes || 0})
+      </button>
+      <button class="action-button" onclick="showShareMenu(this)">
+        📤 Share
+      </button>
+    </div>
+    ${post.content.includes('REMIX') ? '<div style="color: red; font-size: 14px; margin-top: 10px; text-align: center;">No Offense to the people doing these remixes, keep doing what you\'re doing!</div>' : ''}
+    ${shareMenuHTML}
+  `;
+  return postDiv;
+}
+
+function like(button) {
+  const likesText = button.textContent;
+  const likes = parseInt(likesText.match(/\d+/)[0]) + 1;
+  button.textContent = `👍 Rock On Gramps! (${likes})`;
+  
+  // Check for 666 likes
+  if (likes === 666) {
+    const post = button.closest('.post');
+    const name = post.querySelector('strong').textContent;
+    banGrandpa(post, name, "worshipping the devil!");
+  }
+}
+
+function yeah(button) {
+  const yeahsText = button.textContent;
+  const yeahs = parseInt(yeahsText.match(/\d+/)[0]) + 1;
+  button.textContent = `🌟 YEAH!!! (${yeahs})`;
+  
+  // Check for 666 yeahs
+  if (yeahs === 666) {
+    const post = button.closest('.post');
+    const name = post.querySelector('strong').textContent;
+    banGrandpa(post, name, "worshipping the devil!");
+  }
+}
+
+// Add new helper function for banning grandpas
+function banGrandpa(post, name, reason) {
+  // Increment banned count
+  bannedGrandpas++;
+  
+  // Add banned overlay and disable buttons
+  post.style.opacity = '0.5';
+  post.style.position = 'relative';
+  
+  const bannedOverlay = document.createElement('div');
+  bannedOverlay.style.cssText = `
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(0,0,0,0.7);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: red;
+    font-size: 24px;
+    text-align: center;
+    padding: 20px;
+    border-radius: 8px;
+  `;
+  bannedOverlay.innerHTML = `
+    <div>
+      <h2>⛔ GRANDPA BANNED ⛔</h2>
+      <p>${name} has been banned from GrandpaBook for ${reason}</p>
+      <p>Back to church with you!</p>
+    </div>
+  `;
+  
+  post.appendChild(bannedOverlay);
+  
+  // Disable all buttons on the banned post
+  post.querySelectorAll('.action-button').forEach(btn => {
+    btn.disabled = true;
+    btn.style.opacity = '0.5';
+    btn.style.cursor = 'not-allowed';
+  });
+
+  // Check if all grandpas are banned
+  if (bannedGrandpas >= posts.length) {
+    if (backgroundMusic) {
+      backgroundMusic.pause();
+    }
+    
+    if (sadTrombone) {
+      sadTrombone.play().catch(error => {
+        console.log("Sad trombone playback failed:", error);
+      });
+    }
+    
+    setTimeout(() => {
+      const gameOverOverlay = document.createElement('div');
+      gameOverOverlay.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0,0,0,0.9);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        color: white;
+        font-size: 32px;
+        text-align: center;
+        padding: 20px;
+        z-index: 9999;
+      `;
+      gameOverOverlay.innerHTML = `
+        <div>
+          <h1>🚫 CONGRATULATIONS? 🚫</h1>
+          <p>You've sent all the grandpas back to church...</p>
+          <p>Are you proud of yourself?</p>
+          <p style="font-size: 24px; margin-top: 40px; color: #888;">
+            Maybe it's time to reflect on what you've done...
+          </p>
+        </div>
+      `;
+      document.body.appendChild(gameOverOverlay);
+    }, 1000);
+  }
+}
+
+function showShareMenu(button) {
+  const post = button.closest('.post');
+  const shareMenu = post.querySelector('.share-menu');
+  shareMenu.style.display = shareMenu.style.display === 'block' ? 'none' : 'block';
+  shareMenu.style.position = 'absolute';
+  const rect = button.getBoundingClientRect();
+  shareMenu.style.top = `${rect.bottom + window.scrollY}px`;
+  shareMenu.style.left = `${rect.left}px`;
+}
+
+function shareWith(recipient, pronoun) {
+  if (recipient === 'Great Grandpa') {
+    alert("Shared with great gr- Oh, nevermind. Great Grandpa is dead...");
+  } else {
+    const message = pronoun ? 
+      `Shared with ${recipient}! ${pronoun}'ll be so happy to see this!` :
+      `Shared with ${recipient}! They'll be so happy to see this!`;
+    alert(message);
+  }
+  document.querySelectorAll('.share-menu').forEach(menu => menu.style.display = 'none');
+}
+
+const reminders = [
+  "Don't forget to take your pills! 💊",
+  "Time to mow that lawn! 🌱",
+  "Your wife's cookies should be ready by now! 🍪",
+  "Have you checked your blood pressure today? 🩺",
+  "Time for your afternoon nap! 💤",
+  "Did you tell any kids to get off your lawn yet? 👨‍🦳",
+  "Time to feed the birds! 🐦",
+  "Don't forget your water aerobics class! 🏊‍♂️",
+  "Did you organize your stamp collection today? 📫",
+  "Time to watch Wheel of Fortune! 📺",
+  "Have you polished your dentures? 😁",
+  "Time to call your grandkids! 📞",
+  "Don't forget your bingo night! 🎱",
+  "Time to clean those reading glasses! 👓",
+  "Have you done your crossword puzzle? 📝"
+];
+
+let reminderInterval = null;
+let timerDisplay = null;
+let nextReminderTime = null;
+
+function updateTimerDisplay() {
+  if (!timerDisplay) {
+    timerDisplay = document.createElement('div');
+    timerDisplay.className = 'reminder-timer';
+    document.body.appendChild(timerDisplay);
+  }
+  
+  if (nextReminderTime) {
+    const now = Date.now();
+    const timeLeft = Math.max(0, nextReminderTime - now);
+    const secondsLeft = Math.ceil(timeLeft / 1000);
+    const minutes = Math.floor(secondsLeft / 60);
+    const seconds = secondsLeft % 60;
+    
+    // Only show if not in battle or game over
+    if (!document.querySelector('.boss-battle') && !document.querySelector('.game-over')) {
+      timerDisplay.style.display = 'flex';
+      timerDisplay.innerHTML = `
+        <span style="font-size: 20px;">⏰</span>
+        Next reminder in: ${minutes}:${seconds.toString().padStart(2, '0')}
+      `;
+    } else {
+      timerDisplay.style.display = 'none';
+    }
+  }
+}
+
+function startReminderTimer() {
+  if (reminderInterval) clearInterval(reminderInterval);
+  
+  nextReminderTime = Date.now() + 90000; // 90 seconds from now
+  
+  // Update timer display every second
+  setInterval(updateTimerDisplay, 1000);
+  
+  reminderInterval = setInterval(() => {
+    if (!document.querySelector('.boss-battle') && !document.querySelector('.game-over')) {
+      const reminder = reminders[Math.floor(Math.random() * reminders.length)];
+      
+      const reminderDiv = document.createElement('div');
+      reminderDiv.style.cssText = `
+        position: fixed;
+        bottom: 80px;
+        right: 20px;
+        background: var(--post-bg);
+        padding: 15px 20px;
+        border-radius: 8px;
+        box-shadow: 0 2px 10px rgba(0,0,0,0.2);
+        animation: slideIn 0.5s ease-out;
+        z-index: 1000;
+        font-size: 20px;
+        color: var(--text-color);
+      `;
+      reminderDiv.innerHTML = `
+        <div style="display: flex; align-items: center; gap: 10px;">
+          <span style="font-size: 24px;">⏰</span>
+          ${reminder}
+        </div>
+      `;
+      
+      document.body.appendChild(reminderDiv);
+      
+      // Remove after 5 seconds
+      setTimeout(() => {
+        reminderDiv.style.animation = 'slideOut 0.5s ease-in';
+        setTimeout(() => reminderDiv.remove(), 500);
+      }, 5000);
+      
+      // Reset next reminder time
+      nextReminderTime = Date.now() + 90000;
+    }
+  }, 90000);
+}
+
+// Add keyframe animations
+function addKeyframeAnimations() {
+  const style = document.createElement('style');
+  style.textContent = `
+    @keyframes slideIn {
+      from { transform: translateX(100%); }
+      to { transform: translateX(0); }
+    }
+
+    @keyframes slideOut {
+      from { transform: translateX(0); }
+      to { transform: translateX(100%); }
+    }
+  `;
+  document.head.appendChild(style);
+}
+
+// Start reminder timer when page loads
+window.addEventListener('load', () => {
+  startReminderTimer();
+  addKeyframeAnimations();
+});
+
+// Initialize posts
+window.onload = function() {
+  const container = document.getElementById('posts-container');
+  posts.forEach(post => {
+    container.appendChild(createPostElement(post));
+  });
+};
+
+// Event listener for Enter key on post input
+document.querySelector('.post-input').addEventListener('keypress', function(event) {
+  if (event.key === 'Enter') {
+    createPost();
+  }
+});
+
+// Complete BossBattle class declaration
+class BossBattle {
+  constructor(isEX = false) {
+    // Clear reminder interval when battle starts
+    if (reminderInterval) clearInterval(reminderInterval);
+    
+    this.bossHP = 10000000;
+    this.playerHP = 10000;
+    this.isActive = true;
+    this.attackInterval = null;
+    this.phase = 1;
+    this.attackButton = null;
+    this.healButton = null;
+    this.isPhase2 = false;
+    this.isPhase3 = false;
+    this.phase3TeleportInterval = null;
+    this.phase3HealTeleportInterval = null; // Added heal teleport interval
+    this.isEX = isEX;
+    
+    // Initialize the appropriate music based on battle type
+    if (backgroundMusic) {
+      backgroundMusic.pause();
+    }
+
+    if (bossMusic) {
+      bossMusic.pause();
+      bossMusic = null;
+    }
+
+    bossMusic = new Audio(this.isEX ? 
+      '[ Megalovania Hard - Mode] Full Animated OST [ ezmp3.cc ].mp3' : 
+      'toby fox - UNDERTALE Soundtrack - 77 ASGORE.mp3');
+    bossMusic.loop = true;
+    bossMusic.play().catch(error => {
+      console.log("Boss music playback failed:", error);
+    });
+
+    this.createBattleScreen();
+    this.startBattle();
+
+    // If EX battle, start teleporting attack button immediately
+    if (this.isEX) {
+      this.buttonTeleportInterval = setInterval(() => {
+        if (Math.random() < 0.3) {
+          this.teleportButton(this.attackButton);
+        }
+      }, 2000);
+    }
+    
+    // Set attack interval based on mode
+    this.attackInterval = setInterval(() => {
+      if (this.isActive) {
+        this.bossAttack();
+      }
+    }, this.isEX ? 1500 : 2500); // EX attacks every 1.5s instead of 2.5s
+  }
+  
+  createBattleScreen() {
+    const battle = document.createElement('div');
+    battle.className = 'boss-battle';
+    battle.innerHTML = `
+      <h1 id="boss-name">${this.isEX ? 'The GRAND Grandpa EX' : 'The GRAND Grandpa'}</h1>
+      <div class="boss-health">
+        <div class="health-bar" id="boss-health"></div>
+      </div>
+      <div class="boss-sprite">
+        <img src="images.jpg" width="200" height="200" style="border-radius: 10px;">
+      </div>
+      <div class="battle-text" id="battle-text">The final grandpa appears!</div>
+      <div class="player-health">
+        <div class="health-bar" id="player-health"></div>
+      </div>
+      <div style="display: flex; gap: 10px;" id="button-container">
+        <button class="attack-button" onclick="bossBattle.playerAttack()">ATTACK</button>
+        <button class="heal-button" onclick="bossBattle.playerHeal()">HEAL</button>
+      </div>
+    `;
+    document.body.appendChild(battle);
+    
+    this.attackButton = battle.querySelector('.attack-button');
+    this.healButton = battle.querySelector('.heal-button');
+  }
+
+  startBattle() {
+    // Start boss's attack pattern
+    this.attackInterval = setInterval(() => {
+      if (this.isActive) {
+        this.bossAttack();
+      }
+    }, 2500); // Attack every 2.5 seconds
+  }
+
+  bossAttack() {
+    if (!this.isActive) return;
+    
+    // Randomize damage between 800-1200
+    const damage = Math.floor(Math.random() * 400) + 800;
+    this.playerHP -= damage;
+    
+    // Visual feedback
+    document.getElementById('battle-text').textContent = `The ${this.isPhase2 ? 'ALMIGHTY' : 'GRAND'} Grandpa deals ${damage} damage!`;
+    document.querySelector('.player-health').style.animation = 'damage 0.3s';
+    setTimeout(() => {
+      document.querySelector('.player-health').style.animation = '';
+    }, 300);
+
+    this.updateHealth();
+
+    // Check for game over
+    if (this.playerHP <= 0) {
+      this.gameOver();
+    }
+  }
+
+  playerAttack() {
+    if (!this.isActive) return;
+    
+    // Play slash sound
+    slashSound.play().catch(error => {
+      console.log("Slash sound failed:", error);
+    });
+    
+    let damage;
+    // If in FATE phase of EX battle, instant kill
+    if (this.isEX && this.isPhase3) {
+      damage = this.bossHP;
+      // Add dramatic effect
+      document.getElementById('battle-text').textContent = `You landed the final blow! The FATE has been sealed!`;
+    } else {
+      // Normal damage calculation
+      damage = Math.floor(Math.random() * 25000) + 50000;
+      document.getElementById('battle-text').textContent = `You deal ${damage} damage!`;
+    }
+    
+    this.bossHP -= damage;
+    
+    // Visual feedback
+    document.querySelector('.boss-sprite').style.animation = 'damage 0.3s, float 2s infinite ease-in-out';
+    setTimeout(() => {
+      document.querySelector('.boss-sprite').style.animation = 'float 2s infinite ease-in-out';
+    }, 300);
+
+    this.updateHealth();
+
+    // Check for victory
+    if (this.bossHP <= 0) {
+      this.win();
+    }
+  }
+
+  playerHeal() {
+    if (!this.isActive) return;
+    
+    // Play heal sound
+    healSound.play().catch(error => {
+      console.log("Heal sound failed:", error);
+    });
+    
+    // Disable heal button temporarily
+    this.healButton.disabled = true;
+    
+    // Random heal amount between 2000-4000
+    const healAmount = Math.floor(Math.random() * 2000) + 2000;
+    this.playerHP = Math.min(10000, this.playerHP + healAmount);
+    
+    // Visual feedback
+    document.getElementById('battle-text').textContent = `You heal for ${healAmount} HP!`;
+    document.querySelector('.player-health').style.backgroundColor = '#28a745';
+    setTimeout(() => {
+      document.querySelector('.player-health').style.backgroundColor = '';
+    }, 300);
+
+    this.updateHealth();
+
+    // Re-enable heal button after 1.5 seconds for EX battle, 3 seconds for regular
+    setTimeout(() => {
+      this.healButton.disabled = false;
+    }, this.isEX ? 1500 : 3000);
+  }
+
+  updateHealth() {
+    document.getElementById('boss-health').style.width = `${(this.bossHP / 10000000) * 100}%`;
+    document.getElementById('player-health').style.width = `${(this.playerHP / 10000) * 100}%`;
+    
+    // Check for phase 2 transition at 5 million HP
+    if (this.bossHP <= 5000000 && !this.isPhase2) {
+      this.startPhase2();
+    }
+
+    // Check for phase 3 transition at 1 million HP (EX only)
+    if (this.isEX && this.bossHP <= 1000000 && !this.isPhase3) {
+      this.startPhase3();
+    }
+  }
+
+  startPhase2() {
+    this.isPhase2 = true;
+    document.getElementById('boss-name').textContent = this.isEX ? "THE GRANDEST GRANDPA" : "THE ALMIGHTY GRANDPA";
+    document.getElementById('battle-text').textContent = `The ${this.isEX ? 'GRAND Grandpa EX' : 'GRAND Grandpa'} transforms into his ultimate form!`;
+    
+    // Increase music pitch
+    bossMusic.playbackRate = 1.25;
+    
+    // Start random button teleportation
+    this.buttonTeleportInterval = setInterval(() => {
+      if (Math.random() < 0.3) { // 30% chance to teleport every interval
+        this.teleportButton(this.attackButton);
+      }
+    }, 2000);
+    
+    // Add visual effects for phase transition
+    const flash = document.createElement('div');
+    flash.style.cssText = `
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: white;
+      animation: flash 1s forwards;
+      z-index: 10000;
+    `;
+    document.body.appendChild(flash);
+    setTimeout(() => flash.remove(), 1000);
+  }
+
+  startPhase3() {
+    this.isPhase3 = true;
+    document.getElementById('boss-name').textContent = "FATE";
+    document.getElementById('boss-name').style.color = '#ff0000';
+    document.getElementById('boss-name').style.textShadow = '0 0 20px #ff0000';
+    document.getElementById('battle-text').textContent = `The GRANDEST GRANDPA transcends reality!`;
+    
+    // Increase music pitch even more
+    bossMusic.playbackRate = 1.5;
+    
+    // Clear previous teleport interval
+    if (this.buttonTeleportInterval) {
+      clearInterval(this.buttonTeleportInterval);
+    }
+    
+    // Rapid teleportation interval for attack button
+    this.phase3TeleportInterval = setInterval(() => {
+      this.teleportButton(this.attackButton);
+    }, 400); // Teleports every 0.4 seconds
+
+    // Slow teleportation interval for heal button
+    this.phase3HealTeleportInterval = setInterval(() => {
+      this.teleportButton(this.healButton);
+    }, 2000); // Teleports every 2 seconds
+    
+    // Add visual effects for phase transition
+    const flash = document.createElement('div');
+    flash.style.cssText = `
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: red;
+      animation: flash 1s forwards;
+      z-index: 10000;
+    `;
+    document.body.appendChild(flash);
+    setTimeout(() => flash.remove(), 1000);
+    
+    // Make the screen shake continuously
+    document.querySelector('.boss-battle').style.animation = 'damage 0.2s infinite';
+
+    // Modify attack button for instant kill
+    this.attackButton.textContent = "FINISH HIM";
+  }
+
+  win() {
+    this.isActive = false;
+    clearInterval(this.attackInterval);
+    clearInterval(this.buttonTeleportInterval);
+    if (this.phase3TeleportInterval) {
+      clearInterval(this.phase3TeleportInterval);
+    }
+    if (this.phase3HealTeleportInterval) {  // Clear heal button teleport interval
+      clearInterval(this.phase3HealTeleportInterval);
+    }
+    if (bossMusic) {
+      bossMusic.pause();
+      bossMusic.currentTime = 0;
+      bossMusic.playbackRate = 1.0;
+    }
+    
+    const winScreen = document.createElement('div');
+    winScreen.className = 'game-over';
+    winScreen.style.color = '#00ff00';
+    winScreen.innerHTML = `
+      <h1>VICTORY!</h1>
+      <p>You defeated the ${this.isEX ? 'FATE itself' : 'almighty grandpa'}!</p>
+      <button onclick="location.reload()" style="font-size: 24px; margin-top: 20px; padding: 10px 20px;">
+        Play Again
+      </button>
+    `;
+    document.body.appendChild(winScreen);
+  }
+
+  gameOver() {
+    this.isActive = false;
+    clearInterval(this.attackInterval);
+    clearInterval(this.buttonTeleportInterval);
+    if (this.phase3TeleportInterval) {
+      clearInterval(this.phase3TeleportInterval);
+    }
+    if (this.phase3HealTeleportInterval) {  // Clear heal button teleport interval
+      clearInterval(this.phase3HealTeleportInterval);
+    }
+    if (bossMusic) {
+      bossMusic.pause();
+      bossMusic.currentTime = 0;
+      bossMusic.playbackRate = 1.0;
+    }
+    
+    const gameOverScreen = document.createElement('div');
+    gameOverScreen.className = 'game-over';
+    gameOverScreen.innerHTML = `
+      <h1>GAME OVER</h1>
+      <p>The ${this.isPhase3 ? 'FATE' : (this.isPhase2 ? (this.isEX ? 'GRANDEST' : 'ALMIGHTY') : 'GRAND')} Grandpa was too strong!</p>
+      <button onclick="location.reload()" style="font-size: 24px; margin-top: 20px; padding: 10px 20px;">
+        Try Again
+      </button>
+    `;
+    document.body.appendChild(gameOverScreen);
+  }
+
+  teleportButton(button) {
+    const container = document.querySelector('.boss-battle');
+    const containerRect = container.getBoundingClientRect();
+    
+    // Random position within the container
+    const maxX = containerRect.width - button.offsetWidth;
+    const maxY = containerRect.height - button.offsetHeight;
+    
+    const randomX = Math.random() * maxX;
+    const randomY = Math.random() * maxY;
+    
+    button.style.position = 'absolute';
+    button.style.left = `${randomX}px`;
+    button.style.top = `${randomY}px`;
+  }
+}
+
+// Rest of the code...
+function createPost() {
+  const input = document.querySelector('.post-input');
+  const content = input.value.trim();
+  
+  if (content.toLowerCase() === 'i hate grandpas') {
+    input.value = '';
+    bossBattle = new BossBattle(false); // Regular battle
+    return;
+  }
+  
+  if (content.toLowerCase() === 'i really hate grandpas') {
+    input.value = '';
+    bossBattle = new BossBattle(true); // EX battle
+    return;
+  }
+  
+  if (content) {
+    const newPost = {
+      name: getRandomItem(oldTimeyNames),
+      time: "Just now",
+      content: content,
+      likes: 0,
+      yeahs: 0,
+      dislikes: 0,
+      image: getRandomItem(profilePics)
+    };
+    const postElement = createPostElement(newPost);
+    document.getElementById('posts-container').prepend(postElement);
+    input.value = '';
+  }
+}
+
+function toggleTheme() {
+  const body = document.body;
+  if (body.getAttribute('data-theme') === 'dark') {
+    body.removeAttribute('data-theme');
+  } else {
+    body.setAttribute('data-theme', 'dark');
+  }
+}
+
+// Close share menus when clicking outside
+document.addEventListener('click', function(event) {
+  if (!event.target.closest('.action-button') && !event.target.closest('.share-menu')) {
+    document.querySelectorAll('.share-menu').forEach(menu => menu.style.display = 'none');
+  }
+});
+</script>
+</body>
+</html>
